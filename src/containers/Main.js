@@ -45,6 +45,12 @@ const Main = props => {
                         )
                     }}>
                 </Route>
+                <Route 
+                    exact path='/users/:id/messages/new'
+                    component={MessageForm}
+                >
+
+                </Route>
             </Switch>
         </div>
     )
