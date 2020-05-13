@@ -15,6 +15,8 @@ class MessageList extends Component {
                 key={m._id}
                 date={m.createdAt}
                 text={m.text}
+                message_id={m._id}
+                id={m.user._id}
                 username={m.user.username}
                 profileImageUrl={m.user.profileImageUrl}
                 removeMessage={removeMessage.bind(this, m.user._id, m._id)}

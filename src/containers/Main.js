@@ -3,10 +3,12 @@ import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Homepage from '../components/Homepage';
 import AuthForm from '../components/AuthForm';
-import { authUser } from '../store/actions/auth';
+import { authUser, updateUser } from '../store/actions/auth';
 import { removeError } from '../store/actions/errors';
 import withAuth from '../hocs/withAuth';
 import MessageForm from '../containers/MessageForm';
+import PutForm from '../components/PutForm';
+import MessageShow from '../components/MessageShow';
 
 const Main = props => {
     const { authUser, errors, removeError, currentUser } = props;
@@ -47,12 +49,29 @@ const Main = props => {
                         )
                     }}>
                 </Route>
+                <Route
+                    exact
+                    path='/users/:id'
+                    component={withAuth(PutForm)}
+                    >
+                </Route>
+                <Route 
+                    exact path='/users/:id/messages/:message_id'
+                    render={props=> {
+                        return (
+                            <MessageShow  {...props}/>
+                        )
+                    }}
+                >
+
+                </Route>
                 <Route 
                     exact path='/users/:id/messages/new'
                     component={withAuth(MessageForm)}
                 >
 
                 </Route>
+                
             </Switch>
         </div>
     )
@@ -65,4 +84,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default withRouter(connect(mapStateToProps, { authUser, removeError })(Main));
+export default withRouter(connect(mapStateToProps, { authUser, removeError, updateUser })(Main));

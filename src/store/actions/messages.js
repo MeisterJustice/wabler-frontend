@@ -1,10 +1,15 @@
 import { apiCall } from '../../services/api';
-import { LOAD_MESSAGES, REMOVE_MESSAGE } from '../actionTypes';
+import { LOAD_MESSAGES, REMOVE_MESSAGE, LOAD_MESSAGE } from '../actionTypes';
 import { addError } from './errors';
 
 export const loadMessages = messages => ({
     type: LOAD_MESSAGES,
     messages
+});
+
+export const loadMessage = message => ({
+    type: LOAD_MESSAGE,
+    message
 });
 
 export const remove = id => ({
@@ -17,6 +22,17 @@ export const fetchMessages = () => {
         return apiCall("get", '/api/messages')
             .then((res) => {
                 dispatch(loadMessages(res));
+            }).catch(err => {
+                dispatch(addError(err.messages));
+            })
+    }
+}
+
+export const fetchMessage = (user_id, message_id) => {
+    return dispatch => {
+        return apiCall("get", `/api/users/${user_id}/messages/${message_id}`)
+            .then((res) => {
+                dispatch(loadMessage(res));
             }).catch(err => {
                 dispatch(addError(err.messages));
             })
